@@ -43,8 +43,12 @@ const OnboardingScreen = ({setFirstLaunch}) =>{
             {
               backgroundColor: '#fff',
               image: <Image   style={{height: '60%', width: '90%', resizeMode:'contain', marginBottom:-200}} source={require('../image/testing.png')} />,
-              title: <Text style={{fontWeight:'bold', textAlign:'center', color:'#A0CE4E', fontSize:19, margin:12,  marginTop: -70}}>Welcome to STEDI  Balance</Text>,
-              subtitle: 'STEDI Balance will now send a text with a code',
+             
+              title: <Text style={{fontWeight:'bold', textAlign:'center', color:'#A0CE4E', fontSize:19, margin:12,  marginTop: -70}}></Text>,
+              subtitle: (<View>
+
+                <Text><Text style={{fontWeight:'bold', textAlign:'center', color:'#A0CE4E', fontSize:19, margin:12,  marginTop: -70}}>We Value your Privacy. Please share your phone number with us so we can track your balance.</Text></Text>
+              </View>),
             },
             {
                 backgroundColor: '#fff',
