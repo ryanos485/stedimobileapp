@@ -16,17 +16,14 @@ const Home = (props) => {
 //today score
 const todayScore = async() =>{
   let scoreObject ={};
+ 
   try{
-    const tokenResponse = await fetch('https://dev.stedi.me/login',{
-  method: 'POST',
-  body:JSON.stringify({
-    userName: "rom19010@byui.edu",
-    password:"Patricia2596@"
-  })
-});
+const sessionToken = await AsyncStorage.getItem('sessionToken')
+const userName = await AsyncStorage.getItem('userName')
+token.current = sessionToken
 
- token.current = await tokenResponse.text();
-    const scoreResponse = await fetch('https://dev.stedi.me/riskscore/rom19010@byui.edu',{
+ 
+    const scoreResponse = await fetch('https://dev.stedi.me/riskscore/' +userName,{
     method:'GET',
     headers:{
       'Content-Type': 'application/json',

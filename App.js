@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from 'react';
 
-import { StyleSheet, Text, View, Image, TouchableOpacity, } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, } from 'react-native';
 
 import  Navigation from './components/Navigation';
 
@@ -42,7 +42,40 @@ const App = () =>{
 
   const[phoneNumber, setPhoneNumber] = React.useState('');
 
-  const [oneTimePassword, setOneTimePassword] = React.useState(null)
+  const [oneTimePassword, setOneTimePassword] = React.useState(null);
+
+  useEffect(()=>{
+    const getSessionToken = async()=>{
+      const sessionToken = await AsyncStorage.getItem('sessionToken');
+      console.log('sessionToken', sessionToken);
+      const validateResponse = await fetch('https://dev.stedi.me/validate/'+sessionToken,
+      {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/text' }
+      
+    })
+  
+
+
+
+  if(validateResponse.status==200){
+    const userName = await validateResponse.text();
+    await AsyncStorage.setItem('username', userName);
+    console.log("user name",userName)
+    setLoggedInState(loggedInStates.LOGGED_IN);
+  } 
+  }
+  getSessionToken();
+
+});
+
+
+
+
+
+
+
 
  
 
@@ -113,8 +146,10 @@ return(
                     onPress = {async()=>{
 
                     console.log('This Button was pressed!');
+                    console.log phoneNumber
+                    console.log oneTimePassword
 
-                    var the_url = await fetch("https://dev.stedi.me/twofactorlogin/" + phoneNumber,
+                    var sendTextResponse = await fetch("https://dev.stedi.me/twofactorlogin/" + phoneNumber,
 
                     {
 
@@ -214,10 +249,15 @@ return(
                     console.log("loginresponsestatus",loginResponse.status)
 
                     if(loginResponse.status == 200){
+                      const sessionToken = await loginResponse.text();
+                      await AsyncStorage.setItem('sessionToken', sessionToken)
 
                       setLoggedInState(loggedInStates.LOGGED_IN)
 
                     }else{
+                      console.log('response status', loginResponse.status);
+                      Alert.alert('Invalid', 'Invalid login information')
+
 
                       setLoggedInState(loggedInStates.NOT_LOGGED_IN)
 
