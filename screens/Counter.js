@@ -10,6 +10,7 @@ import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage, button
 import exerciseImg from '../image/exercise2.png';
 import ProgressBar from 'react-native-progress/Bar';
 import { FontAwesome5 } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { Ionicons} from 'react-native-vector-icons';
 // import { Button } from 'react-native-elements';
 // import { IconButton } from 'react-native-paper';
@@ -21,6 +22,16 @@ export default function Counter(props) {
  const [score, setScore] = useState(0);
 
  const [currentScreen, setCurrentScreen] = useState('counter');
+useEffect(()=>{
+  const getUserName = async ()=>{
+    userName.current= await AsyncStorage.getItem('userName');
+    console.log('Counter userName',userName.current);
+    token.current = await AsyncStorage.getItem('sessionToken');
+    console.log('countertoken:' ,token.current);
+  };
+  getUserName();
+},[])
+
 useEffect(()=>{
   if (currentScreen == 'counter'){
     if (completionCount == 1){
@@ -89,12 +100,10 @@ stepPoints  = [];
 }); 
 stepPoints.length=30;
   try{
-    const sessionToken = await AsyncStorage.getItem('sessionToken')
-    const userName = await AsyncStorage.getItem('userName')
-    token.current = sessionToken  
-
+    
+console.log("fixusername "+userName.current)
  
-console.log('token counter:' ,token.current);
+console.log('token counter:' +token.current);
 await fetch('https://dev.stedi.me/rapidsteptest',{
   method:'POST',
   headers:{
@@ -119,7 +128,7 @@ totalSteps:30
 //Get the results of the counter
 
 const getResults = async () =>{
-
+console.log("getscoreusername "+userName.current)
 try{
   const scoreResponse = await fetch('https://dev.stedi.me/riskscore/'+userName.current,{
   method:'GET',

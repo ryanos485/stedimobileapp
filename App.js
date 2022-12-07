@@ -61,7 +61,7 @@ const App = () =>{
 
   if(validateResponse.status==200){
     const userName = await validateResponse.text();
-    await AsyncStorage.setItem('username', userName);
+    await AsyncStorage.setItem('userName', userName);
     console.log("user name",userName)
     setLoggedInState(loggedInStates.LOGGED_IN);
   } 
@@ -146,8 +146,8 @@ return(
                     onPress = {async()=>{
 
                     console.log('This Button was pressed!');
-                    console.log phoneNumber
-                    console.log oneTimePassword
+                    console.log (phoneNumber)
+                    console.log (oneTimePassword)
 
                     var sendTextResponse = await fetch("https://dev.stedi.me/twofactorlogin/" + phoneNumber,
 
